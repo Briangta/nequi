@@ -7,9 +7,11 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-  <button ion-button (click)="scanBarcode()">Sacan</button>
+  <div *ngIf="results">
+    <p>{{results.text}}</p>
+    <p>{{results.format}}</p>
+    <p>{{results.cancelled}}</p> 
+  </div>
+  <button ion-button (click)="scanBarcode()">Escanear</button>
+  <button ion-button (click)="encodeData()">Crear QR</button>
 </ion-content>
