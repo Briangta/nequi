@@ -8,6 +8,7 @@ import { ModalPage } from '../modal/modal';
 import { MenuPage } from '../menu/menu';
 import { PremiosPage } from '../premios/premios';
 import { ModalController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 declare var google:any;
 
@@ -26,7 +27,7 @@ export class HomePage {
   carita:string="";
 
 
-  constructor(private barcode:BarcodeScanner,public navCtrl: NavController,public httpClient:HttpClient) {
+  constructor(private barcode:BarcodeScanner,private alertCtrl: AlertController,public navCtrl: NavController,public httpClient:HttpClient) {
     
   }
 
@@ -70,11 +71,34 @@ export class HomePage {
   }
 
   async scanBarcode(){
+    
     this.options={
       prompt:"Acerca un codigo Qr para pagar y adquirir tus Puntos"
     }
     this.results=await this.barcode.scan(this.options);
-    this.httpClient.get('http://desarrollosahora.com/nequi/index.php/Qr/setScore?IdUsuario=1&score='+this.results["text"])
+    this.presentConfirm(this.results["text"]);
+    
+    //console.log(results);
+    
+  }
+
+  presentConfirm(valor) {
+  let alert = this.alertCtrl.create({
+    title: 'Confirmar Compra',
+    message: 'Desea hacer esta compra por $80.000 en Restaurante Bogota 1  <br/>Calificar:<br/>'+
+    '<img src="assets/imgs/estrellas.png"/>',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Pagar',
+        handler: () => {
+         this.httpClient.get('http://desarrollosahora.com/nequi/index.php/Qr/setScore?IdUsuario=1&score='+this.results["text"])
             .subscribe(data => {
              let responseData = data;
               
@@ -82,12 +106,15 @@ export class HomePage {
                 this.puntaje=responseData["lista"];
                 this.navCtrl.push(HomePage);
               }
-       },
-            err => {
-                console.log(err);
-      });
-    //console.log(results);
-    
+          },
+                err => {
+                    console.log(err);
+          });
+        }
+      }
+    ]
+  });
+  alert.present();
   }
 
   async encodeData(){
