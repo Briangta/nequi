@@ -1,20 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MyModel extends CI_Model {
-
-    public function login($username,$password)
-    {
-        $q  = $this->db->select('*')->from('users')->
-        where('username',$username)->where("password",$password)->get()->row();
-       
-        if($q == ""){
-            //return json_output(204,array('status' => 204,'message' => 'Unauthorized.'));
-            return array('status' => false,'message' => 'Username not found.');
-        } else {
-            return array('status' => true,'message' => 'Bien.',"usuario"=>$q);
-        }
-    }    
+class MyModel extends CI_Model {  
 
     public function loadAllQrs($datos)
     {
@@ -34,9 +21,13 @@ class MyModel extends CI_Model {
                         IdUsuario=$datosObjeto->idUsuario
                 )");
 
+        
+        
+
         if ($q->num_rows()>0)
         {
-            return array('status' => true,'lista'=>$q->result());
+            $m=$this->db->from('Usuario')->where('IdUsuario',$datosObjeto->idUsuario)->get()->row();
+            return array('status' => true,'lista'=>$q->result(),'usuario'=>$m);
         }  
 
         return array('status' => false);   

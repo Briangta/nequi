@@ -1,17 +1,31 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
+
+<ion-content class="no-scroll">
   <div *ngIf="results">
     <p>{{results.text}}</p>
     <p>{{results.format}}</p>
     <p>{{results.cancelled}}</p> 
   </div>
-  <button ion-button (click)="scanBarcode()">Escanear</button>
-  <button ion-button (click)="encodeData()">Crear QR</button>
+  <!--<button ion-button (click)="scanBarcode()">Escanear</button>
+  <button ion-button (click)="encodeData()">Crear QR</button>-->
+
+  <div #map id="map"></div>
+  
 </ion-content>
+<ion-footer>
+  <ion-grid>
+  <ion-row>
+    <ion-col col-4>
+      <ion-icon name="add-circle"></ion-icon>
+    </ion-col>
+    <ion-col col-4>
+      1 of 4
+    </ion-col>
+    <ion-col col-4>
+      {{puntaje}}
+      Nequipuntos
+      <button class="botonPersonalizado" center>Redimir</button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+</ion-footer>

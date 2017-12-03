@@ -1,3 +1,29 @@
 page-home {
 
 }
+
+#map{
+    height:100%;
+    width: 100%;
+}
+
+.no-scroll {
+    scroll-content {
+        overflow-y: hidden;
+    }
+}
+
+.scroll {
+    scroll-content {
+        overflow-y: scroll;
+    }
+}
+
+.botonPersonalizado{
+    background-color: transparent;
+    border: 1px solid #b000bb;
+    border-radius: 3px;
+    padding: 4px;
+    color: #b000bb;
+    -webkit-border-radius: 5px;
+}
