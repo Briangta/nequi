@@ -16,9 +16,12 @@ declare var google:any;
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
-  service: Observable<any>;
 
+/* este el el modulo principal de la app que se encargara de mostrar el mama, ubicar los puntos
+  (esto lo hace consumiendo un servicio que se hizo en phpCodeIghniter), el modelo y el codigo
+  de los servicios tambien esta en el git.
+*/
+export class HomePage {
   @ViewChild('map') mapRef:ElementRef;
   map:any;
   options: BarcodeScannerOptions;
@@ -33,25 +36,29 @@ export class HomePage {
 
   ionViewDidLoad(){
     this.showMap();
-
+    //Consume el servicio para traer todos los comercios y puntos de recargo Nequi
     this.httpClient.get('http://desarrollosahora.com/nequi/index.php/Qr/loadAllQrs?idUsuario=1')
             .subscribe(data => {
               let responseData = data;
               
+              //Verifica si el el retorno del servidor salio bien
               if(responseData["status"]){
                 var usuario=responseData["usuario"];
                 this.puntaje=usuario.Puntos;
+
+                //estos se encargan de mostrar cual nivel(carita) se mostrara dependiendo el puntaje
                 if(parseInt(usuario.Puntos)<1000)
                 {
-                  this.carita="cara1.png";
+                  this.carita="cara1.gif";
                 }else if(parseInt(usuario.Puntos)<2000)
                 {
-                  this.carita="cara2.png";
+                  this.carita="cara2.gif";
                 }else
                 {
-                  this.carita="cara3.png";
+                  this.carita="cara3.gif";
                 }
-
+                
+                //Recorre el los puntos y los agrega al mapa
                 responseData["lista"].forEach(element => {
                   console.log(element); 
                   var icono="";
@@ -75,17 +82,23 @@ export class HomePage {
     this.options={
       prompt:"Acerca un codigo Qr para pagar y adquirir tus Puntos"
     }
+
+
+      //this.presentConfirm("asd");
+    //llama el control del lector de QR
     this.results=await this.barcode.scan(this.options);
-    this.presentConfirm(this.results["text"]);
-    
-    //console.log(results);
+
+    //si se escaneo bien
+    if(this.results["text"]!="")
+      this.presentConfirm(this.results["text"]);
     
   }
 
+  //muestra la confirmacion para el pago, y si sale bien, suma los puntos por la compra
   presentConfirm(valor) {
   let alert = this.alertCtrl.create({
     title: 'Confirmar Compra',
-    message: 'Desea hacer esta compra por $80.000 en Restaurante Bogota 1  <br/>Calificar:<br/>'+
+    message: 'Desea hacer esta compra por $80.000 en Restaurante Bogota 1  <p style="text-align:center;"><b>Calificar:</b></p>'+
     '<img src="assets/imgs/estrellas.png"/>',
     buttons: [
       {
@@ -117,10 +130,13 @@ export class HomePage {
   alert.present();
   }
 
+  //en caso de querer crear un qr, en este caso no se usara
   async encodeData(){
     const results =await this.barcode.encode(this.barcode.Encode.TEXT_TYPE,'test');
   }
 
+
+  //Muestra el mapa y le asigna las opciones
   showMap(){
     const location=new google.maps.LatLng(4.6288839,-74.0836992);
     const mapOptions={
@@ -138,21 +154,24 @@ export class HomePage {
     //this.map.setCenter(google.maps.LatLng(4.6288839,-74.08369));
   }
 
-
+  //abre la ventana dobre la informacion del punto
   openModal(titulo,calificacion,OficialNequi) {
     let obj = {titulo: titulo, calificacion: calificacion,OficialNequi:OficialNequi};
     let myModal = this.navCtrl.push(ModalPage, obj);
     //myModal.present();
   }
 
+  //abre el menu
   abrirMenu(){
     this.navCtrl.push(MenuPage);
   }
 
+  //muestra el listado de premios para canjear
   abrirPremios(){
     this.navCtrl.push(PremiosPage);
   }
   
+  //añade los puntos y le pone un evento click
   addMarket(position,map,title,icon,calificacion,OficialNequi){
     var marker= new google.maps.Marker({
       position:position,

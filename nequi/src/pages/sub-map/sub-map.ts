@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HomePage } from '../home/home';
 /**
- * Generated class for the SubMapPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+  Este es un controlador generico, el core (y comentado esta en home.ts)
  */
 
 @IonicPage()

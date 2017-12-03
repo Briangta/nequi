@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Ionic2RatingModule } from 'ionic2-rating';
+
 /**
- * Generated class for the ModalPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+  Este es un controlador generico, el core (y comentado esta en home.ts)
  */
 
 @IonicPage()
@@ -22,6 +20,7 @@ export class ModalPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     
+    //dependiendo si es oficinaNequi o es un comercio asigna el mensaje para la vista
     if(this.OficialNequi=="1"){
       this.OficialNequi="Recarga";
     }else{
