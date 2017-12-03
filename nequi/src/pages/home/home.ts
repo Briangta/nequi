@@ -5,6 +5,8 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { ModalPage } from '../modal/modal';
+import { MenuPage } from '../menu/menu';
+import { PremiosPage } from '../premios/premios';
 import { ModalController } from 'ionic-angular';
 
 declare var google:any;
@@ -78,6 +80,7 @@ export class HomePage {
               
               if(responseData["status"]){
                 this.puntaje=responseData["lista"];
+                this.navCtrl.push(HomePage);
               }
        },
             err => {
@@ -113,6 +116,14 @@ export class HomePage {
     let obj = {titulo: titulo, calificacion: calificacion,OficialNequi:OficialNequi};
     let myModal = this.navCtrl.push(ModalPage, obj);
     //myModal.present();
+  }
+
+  abrirMenu(){
+    this.navCtrl.push(MenuPage);
+  }
+
+  abrirPremios(){
+    this.navCtrl.push(PremiosPage);
   }
   
   addMarket(position,map,title,icon,calificacion,OficialNequi){

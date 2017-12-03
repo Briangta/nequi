@@ -13,7 +13,7 @@
   <ion-grid>
   <ion-row>
     <ion-col col-4>
-      <img src="assets/imgs/suma.png"/>
+      <img  (click)="abrirMenu()" src="assets/imgs/suma.png"/>
     </ion-col>
     <ion-col col-4 text-center id="caritaLugar">
       <img src="assets/imgs/{{carita}}"/>
@@ -24,7 +24,7 @@
       <br>
       Nequis
       <br>
-      <button class="botonPersonalizado" text-center center>Redimir</button>
+      <button (click)="abrirPremios()" class="botonPersonalizado" text-center center>Redimir</button>
     </ion-col>
   </ion-row>
 </ion-grid>
