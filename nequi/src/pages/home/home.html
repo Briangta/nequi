@@ -1,31 +1,39 @@
 
-
+<ion-header text-center>
+  <button class="botonPersonalizado"(click)="scanBarcode()" text-center>Escanear QR</button>
+</ion-header>
 <ion-content class="no-scroll">
-  <div *ngIf="results">
-    <p>{{results.text}}</p>
-    <p>{{results.format}}</p>
-    <p>{{results.cancelled}}</p> 
-  </div>
   <!--<button ion-button (click)="scanBarcode()">Escanear</button>
   <button ion-button (click)="encodeData()">Crear QR</button>-->
 
   <div #map id="map"></div>
   
 </ion-content>
-<ion-footer>
+<ion-footer id="footer">
   <ion-grid>
   <ion-row>
     <ion-col col-4>
-      <ion-icon name="add-circle"></ion-icon>
+      <img src="assets/imgs/suma.png"/>
     </ion-col>
-    <ion-col col-4>
-      1 of 4
+    <ion-col col-4 text-center id="caritaLugar">
+      <img src="assets/imgs/{{carita}}"/>
+      
     </ion-col>
-    <ion-col col-4>
-      {{puntaje}}
-      Nequipuntos
-      <button class="botonPersonalizado" center>Redimir</button>
+    <ion-col col-4 id="textoPuntajes">
+      <b>{{puntaje}}</b>
+      <br>
+      Nequis
+      <br>
+      <button class="botonPersonalizado" text-center center>Redimir</button>
     </ion-col>
   </ion-row>
 </ion-grid>
 </ion-footer>
+
+<style>
+  #footer{
+    background-image: url(assets/imgs/base.png);
+    background-size: 100%;
+    background-position: bottom;
+}
+</style>

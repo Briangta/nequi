@@ -21,9 +21,48 @@ page-home {
 
 .botonPersonalizado{
     background-color: transparent;
-    border: 1px solid #b000bb;
+    border: 1px solid #ed2e6f;
     border-radius: 3px;
     padding: 4px;
-    color: #b000bb;
+    color: #ed2e6f;
     -webkit-border-radius: 5px;
 }
+
+
+
+#textoPuntajes{
+    text-align: right;
+    color: white;
+}
+
+#textoPuntajes span{
+    text-align: center;
+}
+
+h4{
+    line-height: 0.2 !important;
+}
+
+ion-header{
+    background-color: #32194e;
+
+}
+#caritaLugar p{
+    margin: 0;
+}
+
+.col{
+    padding: 0px!important;
+}
+
+#footer img{
+    max-height: 59px;
+}
+/*
+ion-content{
+    height: 75%;
+}
+
+ion-footer{
+    height: 20%;
+}*/

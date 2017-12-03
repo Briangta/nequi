@@ -9,5 +9,11 @@ class Qr extends CI_Controller {
 		$response = $this->MyModel->loadAllQrs($_REQUEST);
 		json_output("200",$response);		
 	}
+
+	public function setScore()
+	{	        	
+		$response = $this->MyModel->setScore($_REQUEST);
+		json_output("200",$response);		
+	}
 	
 }

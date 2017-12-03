@@ -4,6 +4,8 @@ import { BarcodeScanner,BarcodeScannerOptions} from '@ionic-native/barcode-scann
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
+import { ModalPage } from '../modal/modal';
+import { ModalController } from 'ionic-angular';
 
 declare var google:any;
 
@@ -18,7 +20,8 @@ export class HomePage {
   map:any;
   options: BarcodeScannerOptions;
   results:{};
-  puntaje:string;
+  puntaje:string="0";
+  carita:string="";
 
 
   constructor(private barcode:BarcodeScanner,public navCtrl: NavController,public httpClient:HttpClient) {
@@ -35,22 +38,29 @@ export class HomePage {
               if(responseData["status"]){
                 var usuario=responseData["usuario"];
                 this.puntaje=usuario.Puntos;
-
+                if(parseInt(usuario.Puntos)<1000)
+                {
+                  this.carita="cara1.png";
+                }else if(parseInt(usuario.Puntos)<2000)
+                {
+                  this.carita="cara2.png";
+                }else
+                {
+                  this.carita="cara3.png";
+                }
 
                 responseData["lista"].forEach(element => {
-
-                  this.addMarket(new google.maps.LatLng(element.latitud,element.longitud),this.map,"test");
-                  //console.log();         
+                  console.log(element); 
+                  var icono="";
+                  if(element.OficialNequi==1){
+                    icono="marcca-rearga.png";
+                  }else{
+                    icono="marcca-comercio.png";
+                  }
+                  this.addMarket(new google.maps.LatLng(element.Latitud,element.Longitud),this.map,element.Nombre,icono,element.Calificacion,element.OficialNequi);
+                          
                 });
               }
-              
-
-              
-              /*if(responseData.status){
-                data=>lista.forEach(element => {
-                  
-                });
-              }*/
        },
             err => {
                 console.log(err);
@@ -62,7 +72,17 @@ export class HomePage {
       prompt:"Acerca un codigo Qr para pagar y adquirir tus Puntos"
     }
     this.results=await this.barcode.scan(this.options);
-
+    this.httpClient.get('http://desarrollosahora.com/nequi/index.php/Qr/setScore?IdUsuario=1&score='+this.results["text"])
+            .subscribe(data => {
+             let responseData = data;
+              
+              if(responseData["status"]){
+                this.puntaje=responseData["lista"];
+              }
+       },
+            err => {
+                console.log(err);
+      });
     //console.log(results);
     
   }
@@ -75,7 +95,11 @@ export class HomePage {
     const location=new google.maps.LatLng(4.6288839,-74.0836992);
     const mapOptions={
       center:location,
-      zoom:10
+      zoom:10,
+      zoomControl: false,
+      mapTypeControl: false,
+      scaleControl: false,
+      streetViewControl: false,
     };
 
     this.map=new google.maps.Map(this.mapRef.nativeElement,mapOptions);
@@ -84,13 +108,32 @@ export class HomePage {
     //this.map.setCenter(google.maps.LatLng(4.6288839,-74.08369));
   }
 
-  addMarket(position,map,title){
-    return new google.maps.Marker({
+
+  openModal(titulo,calificacion,OficialNequi) {
+    let obj = {titulo: titulo, calificacion: calificacion,OficialNequi:OficialNequi};
+    let myModal = this.navCtrl.push(ModalPage, obj);
+    //myModal.present();
+  }
+  
+  addMarket(position,map,title,icon,calificacion,OficialNequi){
+    var marker= new google.maps.Marker({
       position:position,
       map:map,
       title:title,
-      icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-    })
+      icon: 'assets/imgs/'+icon,
+      calificacion:calificacion,
+      OficialNequi:OficialNequi
+
+    });
+
+    marker.addListener('click', (event) =>{
+          //alert(marker.test);
+          this.openModal(marker.title,marker.calificacion,marker.OficialNequi);
+          /*map.setZoom(8);
+          map.setCenter(marker.getPosition());*/
+    });
+
+    return marker;
   }
 }
 

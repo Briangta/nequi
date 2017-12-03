@@ -6,12 +6,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { BarcodeScanner} from '@ionic-native/barcode-scanner';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { ModalPage } from '../pages/modal/modal';
 import { HttpClientModule } from '@angular/common/http';
-
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    ModalPage
   ],
   imports: [
     BrowserModule,
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    ModalPage
   ],
   providers: [
     StatusBar,
